@@ -9,6 +9,10 @@ import hashlib
 from sqlalchemy import create_engine
 from catboost import CatBoostClassifier
 
+MODEL_CONTROL_PATH = os.getenv("MODEL_CONTROL_PATH", "models/catboost_model.cbm")
+MODEL_TEST_PATH    = os.getenv("MODEL_TEST_PATH",    "models/catboost_model.cbm")
+IS_LMS = os.getenv("IS_LMS") == "1"
+
 app = FastAPI()
 SQLALCHEMY_DATABASE_URL = "postgresql://robot-startml-ro:pheiph0hahj1Vaif@postgres.lab.karpov.courses:6432/startml"
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
@@ -67,17 +71,10 @@ def get_exp_group(user_id: int) -> str:
 
 # Функция для получения пути к модели
 def get_model_path(group: str) -> str:
-    if group == 'control':
-        if os.environ.get("IS_LMS") == "1":
-            MODEL_PATH = '/workdir/user_input/model_control'
-        else:
-            MODEL_PATH = "C:/Users/fsb19/anaconda3/envs/final/Scripts/code/catboost_model.cbm"
-    if group == 'test':
-        if os.environ.get("IS_LMS") == "1":
-            MODEL_PATH = '/workdir/user_input/model_test'
-        else:
-            MODEL_PATH = "C:/Users/fsb19/anaconda3/envs/final/Scripts/code/catboost_model_second.cbm"
-    return MODEL_PATH
+    if IS_LMS:
+        return '/workdir/user_input/model_control' if group == 'control' else '/workdir/user_input/model_test'
+    return MODEL_CONTROL_PATH if group == 'control' else MODEL_TEST_PATH
+
 
 
 # Функция для загрузки модели CatBoost
@@ -134,3 +131,4 @@ def recommended_posts(id: int, limit: int = 10) -> List[PostGet]: #, time: datet
     ]
 
     return Response(exp_group = group, recommendations = recommended_posts_list)
+
