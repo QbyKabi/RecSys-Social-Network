@@ -3,19 +3,22 @@
 ## Структура репозитория
 ```
 RecSys-Social-Network/
-├─ app.py                 # FastAPI-сервис (эндпоинт рекомендаций)
+├─ app.py                 # FastAPI-сервис
 ├─ database.py            # подключение к БД (SQLAlchemy)
 ├─ schema.py              # Pydantic-схемы ответов
-├─ solution.py            # вспомогательная загрузка модели (для LMS/локально)
+├─ solution.py            # вспомогательная загрузка модели
 ├─ table_user.py          # ORM-модель таблицы пользователей
 ├─ table_post.py          # ORM-модель таблицы постов
 ├─ table_feed.py          # ORM-модель таблицы действий
 ├─ requirements.txt
 ├─ .env.example
 ├─ notebooks/
-│  └─ final_project_model.ipynb   # обучение CatBoost + бейзлайны
+│  ├─ final_project_model.ipynb   # обучение CatBoost + бейзлайны
+│  └─ img/
+│     ├─ pr_curve.png
+│     └─ roc_curve.png
 └─ models/
-   ├─ README.md                   # как получить файл модели
+   └─ README.md                   # как получить файл модели
 ```
 ## Запуск
 1. Установить зависимости
@@ -37,8 +40,8 @@ RecSys-Social-Network/
    - **One-Hot Encoding (OHE)** для категориальных признаков.
    - **Биннинг** числовых признаков.
    - **Извлечение временных признаков**: Разложение на час/день недели.
-   - **Кластеризация текстов**: TF-IDF вектора → PCA для снижения размерности → K-Means.  
-       Используем id кластера и расстояния до центров как признаки; добавляем агрегаты TF-IDF (сумма/макс/среднее).
+   - **Кластеризация текстов**: TF-IDF векторы → PCA для уменьшения количества признаков → K-Means.  
+       Используем id кластера и расстояния до центров как признаки.
    - **Отбор признаков** по важности (feature importance CatBoost) и удаление слабых признаков.
    - **Нормализация** признаков перед обучением **Логистической Регрессии**.
 
@@ -66,3 +69,14 @@ RecSys-Social-Network/
 - catboost
 - SQLAlchemy
 - pydantic
+
+## Результаты
+
+Ниже — сравнительные графики для трёх моделей: CatBoost, DecisionTree и LogisticRegression.
+Численные значения метрик вынесены в легенды:
+
+**Графики ROC и PR**
+
+<img src="notebooks/img/roc_curve.png" alt="ROC curves" width="420" /> <img src="notebooks/img/pr_curve.png" alt="PR curves" width="420" />
+
+**Итог:** CatBoost выигрывает по ROC-AUC и PR-AUC на отложенной выборке; DecisionTree близок, но уступает; LogisticRegression — сильно отстаёт от других моделей.
