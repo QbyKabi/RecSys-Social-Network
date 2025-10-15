@@ -76,6 +76,30 @@ RecSys-Social-Network/
 
 **Графики ROC и PR**
 
-<img src="notebooks/img/roc_curve.png" alt="ROC curves" width="420" /> <img src="notebooks/img/pr_curve.png" alt="PR curves" width="420" />
+<p align="center">
+  <img src="notebooks/img/roc_curve.png" alt="ROC curves" width="420" />
+  <img src="notebooks/img/pr_curve.png"  alt="PR curves"  width="420" />
+</p>
+
+<div align="center">
+
+<table>
+  <thead>
+    <tr>
+      <th>model</th>
+      <th>ROC-AUC</th>
+      <th>PR-AUC (AP)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>CatBoost</td><td>0.880</td><td>0.908</td></tr>
+    <tr><td>DecisionTree</td><td>0.850</td><td>0.889</td></tr>
+    <tr><td>LogisticRegression</td><td>0.629</td><td>0.646</td></tr>
+  </tbody>
+</table>
+
+</div>
+
+
 
 **Итог:** CatBoost выигрывает по ROC-AUC и PR-AUC на отложенной выборке; DecisionTree близок, но уступает; LogisticRegression — сильно отстаёт от других моделей.
