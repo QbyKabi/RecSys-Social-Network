@@ -11,7 +11,6 @@ RecSys-Social-Network/
 ├─ table_post.py          # ORM-модель таблицы постов
 ├─ table_feed.py          # ORM-модель таблицы действий
 ├─ requirements.txt
-├─ .env.example
 ├─ notebooks/
 │  ├─ final_project_model.ipynb   # обучение CatBoost + бейзлайны
 │  └─ img/
